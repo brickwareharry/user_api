@@ -4,6 +4,9 @@ User API Demonstration
 ## Introduction
 🔜 Coming soon
 
+## Usage
+🔜 Coming soon
+
 ## Build Instruction
 🔜 Coming soon
 
