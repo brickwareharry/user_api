@@ -12,3 +12,6 @@ User API Demonstration
 
 ## Deploy Instruction
 🔜 Coming soon
+
+## Database Dictionary
+🔜 Coming soon
