@@ -11,15 +11,28 @@ namespace UserApi.Controllers
     public class UserApiController:ControllerBase
     {
         [HttpGet]
-        public IEnumerable<UserDto> GetUsers()
+        [ProducesResponseType(StatusCodes.Status200OK)] //or use [ProducesResponseType(200)]
+        public ActionResult<IEnumerable<UserDto>> GetUsers()
         {
-            return UserStore.userList;
+            return Ok(UserStore.userList);
         }
 
         [HttpGet("{id:int}")]
-        public UserDto GetUsers(int id)
+        [ProducesResponseType(StatusCodes.Status200OK)] //or use [ProducesResponseType(200)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] //or use [ProducesResponseType(400)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)] //or use [ProducesResponseType(404)]
+        public ActionResult<UserDto> GetUser(int id)
         {
-            return UserStore.userList.FirstOrDefault(u=>u.Id==id);
+            if (id == 0) 
+            { 
+                return BadRequest(); 
+            };
+            var user = UserStore.userList.FirstOrDefault(u => u.Id == id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return Ok(user);
         }
     }
 }
