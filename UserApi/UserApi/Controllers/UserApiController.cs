@@ -17,7 +17,7 @@ namespace UserApi.Controllers
             return Ok(UserStore.userList);
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id:int}", Name = "GetTheUser")]
         [ProducesResponseType(StatusCodes.Status200OK)] //or use [ProducesResponseType(200)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)] //or use [ProducesResponseType(400)]
         [ProducesResponseType(StatusCodes.Status404NotFound)] //or use [ProducesResponseType(404)]
@@ -33,6 +33,21 @@ namespace UserApi.Controllers
                 return NotFound();
             }
             return Ok(user);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)] 
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] 
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public ActionResult<UserDto> CreateUser([FromBody] UserDto userDto) 
+        { 
+            if (userDto == null || userDto.Id !=0)
+            {
+                return BadRequest(userDto);
+            }
+            userDto.Id = UserStore.userList.OrderByDescending(u => u.Id).FirstOrDefault().Id + 1;
+            UserStore.userList.Add(userDto);
+            return CreatedAtRoute("GetTheUser", new { id = userDto.Id}, userDto);
         }
     }
 }
