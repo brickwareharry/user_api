@@ -27,12 +27,12 @@ namespace UserApi.Controllers
             {
                 return BadRequest();
             };
-            var user = UserStore.userList.FirstOrDefault(u => u.Id == id);
-            if (user == null)
+            var exUser = UserStore.userList.FirstOrDefault(u => u.Id == id);
+            if (exUser == null)
             {
                 return NotFound();
             }
-            return Ok(user);
+            return Ok(exUser);
         }
 
         [HttpPost]
@@ -71,14 +71,32 @@ namespace UserApi.Controllers
             {
                 return BadRequest();
             }
-            var user = UserStore.userList.FirstOrDefault(u => u.Id == id);
-            if (user == null)
+            var exUser = UserStore.userList.FirstOrDefault(u => u.Id == id);
+            if (exUser == null)
             {
                 return NotFound();
             }
-            UserStore.userList.Remove(user);
+            UserStore.userList.Remove(exUser);
             return NoContent();
         }
+
+        //[HttpPut("{id:int}", Name = "UpdateUser")]
+        //public IActionResult UpdateUser(int id, [FromBody] UserDto userDto)
+        //{ 
+        //    if (userDto == null || id != userDto.Id) 
+        //    { 
+        //        return BadRequest();
+        //    }
+        //    var exUser = UserStore.userList.FirstOrDefault(u => u.Id == id);
+        //    if (exUser == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    exUser.FirstName = userDto.FirstName;
+        //    exUser.LastName = userDto.LastName;
+        //    exUser.Email = userDto.Email;
+        //    return NoContent();
+        //}
     }
 }
 
