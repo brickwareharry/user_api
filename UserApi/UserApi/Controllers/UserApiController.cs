@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.Design;
 using UserApi.Data;
 using UserApi.Models;
 using UserApi.Models.Dto;
@@ -56,7 +57,15 @@ namespace UserApi.Controllers
                 ModelState.AddModelError("UserEmailValidationError", "User's email already exists");
                 return BadRequest(ModelState);
             }
-            userDto.Id = UserStore.userList.OrderByDescending(u => u.Id).FirstOrDefault().Id + 1;
+            var lastUser = UserStore.userList.OrderByDescending(u => u.Id).FirstOrDefault();
+            if (lastUser != null)
+            {
+                userDto.Id = lastUser.Id + 1;
+            }
+            else
+            {
+                userDto.Id = 1;
+            }
             UserStore.userList.Add(userDto);
             return CreatedAtRoute("GetTheUser", new { id = userDto.Id }, userDto);
         }
@@ -81,10 +90,13 @@ namespace UserApi.Controllers
         }
 
         //[HttpPut("{id:int}", Name = "UpdateUser")]
+        //[ProducesResponseType(StatusCodes.Status204NoContent)]
+        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
+        //[ProducesResponseType(StatusCodes.Status404NotFound)]
         //public IActionResult UpdateUser(int id, [FromBody] UserDto userDto)
-        //{ 
-        //    if (userDto == null || id != userDto.Id) 
-        //    { 
+        //{
+        //    if (userDto == null || id != userDto.Id)
+        //    {
         //        return BadRequest();
         //    }
         //    var exUser = UserStore.userList.FirstOrDefault(u => u.Id == id);
