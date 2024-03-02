@@ -49,7 +49,7 @@ namespace UserApi.Controllers
             {
                 return BadRequest(userDto);
             }
-            //TODO: validate if email is format correct or not
+            //TODO: validate if email format is correct or not
             //User's email have to be unique
             if (UserStore.userList.FirstOrDefault(u => u.Email.ToLower() == userDto.Email.ToLower()) != null)
             {
