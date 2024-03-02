@@ -41,9 +41,20 @@ namespace UserApi.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<UserDto> CreateUser([FromBody] UserDto userDto) 
         { 
-            if (userDto == null || userDto.Id !=0)
+            if (userDto == null)
             {
                 return BadRequest(userDto);
+            }
+            if (userDto.Id != 0)
+            {
+                return BadRequest(userDto);
+            }
+            //User's email have to be unique
+            if (UserStore.userList.FirstOrDefault(u=>u.Email.ToLower()== userDto.Email.ToLower())!=null)
+            {
+                //TODO: check why ModelState does not work
+                ModelState.AddModelError("UserEmailValidationError", "User's email already exists");
+                return BadRequest(ModelState);
             }
             userDto.Id = UserStore.userList.OrderByDescending(u => u.Id).FirstOrDefault().Id + 1;
             UserStore.userList.Add(userDto);
