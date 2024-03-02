@@ -89,26 +89,26 @@ namespace UserApi.Controllers
             return NoContent();
         }
 
-        //[HttpPut("{id:int}", Name = "UpdateUser")]
-        //[ProducesResponseType(StatusCodes.Status204NoContent)]
-        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-        //[ProducesResponseType(StatusCodes.Status404NotFound)]
-        //public IActionResult UpdateUser(int id, [FromBody] UserDto userDto)
-        //{
-        //    if (userDto == null || id != userDto.Id)
-        //    {
-        //        return BadRequest();
-        //    }
-        //    var exUser = UserStore.userList.FirstOrDefault(u => u.Id == id);
-        //    if (exUser == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    exUser.FirstName = userDto.FirstName;
-        //    exUser.LastName = userDto.LastName;
-        //    exUser.Email = userDto.Email;
-        //    return NoContent();
-        //}
+        [HttpPut("{id:int}", Name = "UpdateUser")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult UpdateUser(int id, [FromBody] UserDto userDto)
+        {
+            if (userDto == null || id != userDto.Id)
+            {
+                return BadRequest();
+            }
+            var exUser = UserStore.userList.FirstOrDefault(u => u.Id == id);
+            if (exUser == null)
+            {
+                return NotFound();
+            }
+            exUser.FirstName = userDto.FirstName;
+            exUser.LastName = userDto.LastName;
+            exUser.Email = userDto.Email;
+            return NoContent();
+        }
     }
 }
 
